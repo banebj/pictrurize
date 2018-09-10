@@ -123,5 +123,19 @@
       }
     }
   },
-  "defaultProject": "picturizeme-fe"
+  "defaultProject": "picturizeme-fe",
+  "schematics": {
+    "@schematics/angular": {
+      "component": {
+        "spec": false,
+        "inlineStyle": true
+      },
+      "service": {
+        "spec": false
+      },
+      "module": {
+        "spec": false
+      }
+    }
+  }
 }

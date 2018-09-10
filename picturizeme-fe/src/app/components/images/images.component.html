@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <form >
+      <input type="file" class="form-control" id="avatar" (change)="onFileChange($event)" #fileInput>
+      <button type="button"  (click)="onSubmit()" class="btn btn-success">Submit </button>
+    </form>
+    <button type="button" class="btn btn-info" (click)="loadImage()">Load image</button>
+    <img [src]="imageToShow" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
+    <div class="custom-file mt-3">
+      <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+      <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+      <div class="invalid-feedback">Example invalid custom file feedback</div>
+    </div>
+    <ng-template #noImageFound>
+      <span>NOT FOUND</span>
+    </ng-template>
+  </div>
+</div>

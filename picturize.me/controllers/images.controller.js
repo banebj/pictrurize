@@ -1,6 +1,38 @@
 // Accessing the Service that we just created
 
-var ImageService = require('../services/images.service')
+const ImageService = require('../services/images.service')
+const mongoose = require('mongoose');
+
+const multer = require('multer');
+const path = require('path')
+const Grid = require('gridfs-stream');
+
+let conn = mongoose.connection
+
+let gfs = null
+conn.once('open', () => {
+    Grid.mongo = mongoose.mongo;
+    gfs = Grid(conn.db);
+})
+
+const storage = require('multer-gridfs-storage')({
+    url: 'mongodb://127.0.0.1:27017/picturize',
+    file: (req, file) => {
+        console.debug(file)
+        return {
+            filename: 'image_' + Date.now()
+        };
+    },
+    /** With gridfs we can store aditional meta-data along with the file */
+    metadata: function (req, file, cb) {
+        cb(null, { originalname: file.originalname });
+    },
+    root: 'fs' //root name for collection to store files into
+});
+
+const upload = multer({ //multer settings for single upload
+    storage: storage
+}).single('file');
 
 // Saving the context of this module inside the _the variable
 
@@ -8,6 +40,40 @@ _this = this
 
 
 // Async Controller function to get the To do List
+
+exports.uploadImage = async function (req, res, next) {
+    upload(req, res, function (err) {
+        if (err) {
+            res.json({ error_code: 1, err_desc: err });
+            return;
+        }
+        res.json({ error_code: 0, err_desc: null });
+    });
+}
+
+exports.viewImage = async function (req, res, next) {
+    gfs.collection('fs'); //set collection name to lookup into
+    console.debug(req.params)
+    /** First check if file exists */
+    gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
+        console.debug(files)
+        if (!files || files.length === 0) {
+            return res.status(404).json({
+                responseCode: 1,
+                responseMessage: "error"
+            });
+        }
+        /** create read stream */
+        var readstream = gfs.createReadStream({
+            filename: files[0].filename,
+            root: "fs"
+        });
+        /** set the proper content type */
+        res.set('Content-Type', files[0].contentType)
+        /** return response */
+        return readstream.pipe(res);
+    });
+}
 
 exports.getImages = async function (req, res, next) {
 
