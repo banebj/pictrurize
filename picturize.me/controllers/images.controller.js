@@ -20,7 +20,7 @@ const storage = require('multer-gridfs-storage')({
     file: (req, file) => {
         console.debug(file)
         return {
-            filename: 'image_' + Date.now()
+            filename: file.originalname
         };
     },
     /** With gridfs we can store aditional meta-data along with the file */
@@ -53,9 +53,8 @@ exports.uploadImage = async function (req, res, next) {
 
 exports.viewImage = async function (req, res, next) {
     gfs.collection('fs'); //set collection name to lookup into
-    console.debug(req.params)
     /** First check if file exists */
-    gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
+    gfs.files.find().sort({ uploadDate: -1 }).toArray(function (err, files) {
         console.debug(files)
         if (!files || files.length === 0) {
             return res.status(404).json({
@@ -65,14 +64,46 @@ exports.viewImage = async function (req, res, next) {
         }
         /** create read stream */
         var readstream = gfs.createReadStream({
-            filename: files[0].filename,
+            filename: files[req.params.index].filename,
             root: "fs"
         });
         /** set the proper content type */
-        res.set('Content-Type', files[0].contentType)
+        res.set('Content-Type', files[req.params.index].contentType)
         /** return response */
         return readstream.pipe(res);
     });
+}
+
+exports.getImageOnIndex = async function (req, res, next) {
+    gfs.collection('fs'); //set collection name to lookup into
+    console.debug(req.params)
+    /** First check if file exists */
+
+    let filename = null;
+    gfs.files.find().sort({ uploadDate: -1 }).toArray(function (err, files) {
+        console.debug(files)
+        if (!files || files.length === 0) {
+            return res.status(404).json({
+                responseCode: 1,
+                responseMessage: "error"
+            });
+        }
+        filename = files[req.params.index].filename
+    })
+
+    try {
+        let image = await ImageService.getImagesOnIndex(filename)
+
+        return res.status(200).json({ status: 200, data: image, message: "Succesfully Images Recieved" });
+    } catch (e) {
+
+        //Return an Error Response Message with Code and the Error Message.
+
+        return res.status(400).json({ status: 400, message: e.message });
+
+    }
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
 }
 
 exports.getImages = async function (req, res, next) {

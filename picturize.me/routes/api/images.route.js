@@ -11,6 +11,8 @@ var ImageController = require('../../controllers/images.controller');
 
 router.get('/', ImageController.getImages)
 
+// router.get('/indexed/:index', ImageController.getImageOnIndex)
+
 router.post('/', ImageController.createImage)
 
 router.put('/', ImageController.updateImage)
@@ -19,7 +21,7 @@ router.delete('/:id', ImageController.removeImage)
 
 router.post('/upload',  ImageController.uploadImage)
 
-router.get('/file/:filename',  ImageController.viewImage)
+router.get('/file/:index',  ImageController.viewImage)
 
 
 // Export the Router

@@ -15,20 +15,19 @@ export class ImagesService {
     return this.http.get(`${this.resourceUrl}/file/${filename}`, { responseType: "blob" })
   }
 
-  getOne(id) {
-    return this.http.get(`${this.resourceUrl}/users/${id}`, { observe: "response" })
+  getOneDesc(index) {
+    return this.http.get(`${this.resourceUrl}?index=${index}`, { observe: "response" })
   }
 
   getAll(): Observable<HttpResponse<any>> {
     return this.http.get<any[]>(`${this.resourceUrl}`, { observe: "response" })
   }
 
-  save(user) {
-    return this.http.post(`${this.resourceUrl}/signup`, user, { observe: "response" })
+  save(image) {
+    return this.http.post(`${this.resourceUrl}`, image, { observe: "response" })
   }
 
   upload(file: File) {
-    console.debug(file)
     const formData: FormData = new FormData();
     formData.append('file', file)
     return this.http.post(`${this.resourceUrl}/upload`, formData )

@@ -1,35 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { ImagesService } from '../../services/images.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-images',
   templateUrl: './images.component.html',
 })
 export class ImagesComponent implements OnInit {
-  imageToShow: any;
-  imageLoading: boolean = false;
-  file: any;
+  file: any
+  image: any = {};
 
-  constructor(private imagesService: ImagesService) { }
+  constructor(private imagesService: ImagesService, private router: Router) { }
 
   ngOnInit() {
 
   }
 
-  loadImage(){
-    this.imageLoading = true
-    this.imagesService.getImage("image_1536612256165.jpg").subscribe(
-      (data) => {
-        this.createImageFromBlob(data);
-        this.imageLoading = false;
-      } 
-      ,
-    );
-  }
-
   onSubmit(){
     this.imagesService.upload(this.file).subscribe(
       data => console.debug("Success")
+    )
+    this.image.file = this.file.name;
+    this.imagesService.save(this.image).subscribe(
+      data => console.debug("Success @")
     )
   }
 
@@ -41,14 +34,7 @@ export class ImagesComponent implements OnInit {
     }
   }
 
-  createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this.imageToShow = reader.result;
-    }, false);
-
-    if (image) {
-      reader.readAsDataURL(image);
-    }
+  goBack(){
+    this.router.navigate([''])
   }
 }

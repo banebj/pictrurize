@@ -10,6 +10,7 @@ import { routing } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from './shared/http-interceptor';
+import { HomeModule } from './components/home/home.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { InterceptService } from './shared/http-interceptor';
   ],
   imports: [
     ImagesModule,
+    HomeModule,
     routing,
     NgbModule.forRoot(),
     BrowserModule,
