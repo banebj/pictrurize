@@ -5,23 +5,26 @@
         <button type="button" [routerLink]="[ '/upload' ]" routerLinkActive="active" class="btn btn-primary float-right">Upload</button>
       </div>
     </div>
-    <div *ngIf="!imageToShow || imageToShow.length == 0">
-      No images in database
+    <div *ngIf="loading" class="text-center">
+      <div class="loader">
+      </div>
     </div>
-    <div class="row mt-2 text-center" *ngFor="let image of imageToShow; let i = index">
-      <div class="col-sm-12">
-        <div class="box border row rounded">
+    <div class="col-sm-12" *ngIf="!loading">
+      <div class="row mt-2 text-center" *ngFor="let image of imageDesc; let i = index">
+        <div class="box border row rounded shadow image-box">
           <div class="col-sm-12">
-            <h1 class="card-header">{{imageDesc[i].title}}</h1>
+            <h1 class="card-header">{{image.title}}</h1>
           </div>
           <div class="col-sm-6 text-left" style="font-size: 24px">
-            <span><b>Date : </b>{{imageDesc[i].date | date}}</span><br />
-            <span><b>Location : </b><span class="badge badge-info">{{imageDesc[i].location}}</span></span><br />
-            <span><b>Description : </b>{{imageDesc[i].location}}</span><br />
+            <span><b>Date : </b>{{image.date | date}}</span><br />
+            <span><b>Location : </b><span class="badge badge-info">{{image.location}}</span></span><br />
+            <span><b>Description : </b>{{image.location}}</span>
+            <button class="mt-5 btn btn-danger float-right" type="button" (click)="deleteImage(imageDesc[i]._id)">Delete</button>
           </div>
           <div class="col-sm-6">
-          <img class="m-1 rounded border border-info" style="max-width: 70%; max-height: 70%" [src]="image" alt="Place image title" *ngIf="!isImageLoading">
-        </div>
+            <img class="m-1 rounded border border-info" style="max-width: 70%;" [src]="image.image" alt="Place image title"
+              *ngIf="!isImageLoading">
+          </div>
         </div>
       </div>
     </div>

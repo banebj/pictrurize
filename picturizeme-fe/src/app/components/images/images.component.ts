@@ -18,11 +18,13 @@ export class ImagesComponent implements OnInit {
 
   onSubmit(){
     this.imagesService.upload(this.file).subscribe(
-      data => console.debug("Success")
-    )
-    this.image.file = this.file.name;
-    this.imagesService.save(this.image).subscribe(
-      data => console.debug("Success @")
+      data => {
+        console.debug("Success")
+        this.image.file = this.file.name;
+        this.imagesService.save(this.image).subscribe(
+          data => this.router.navigate([''])
+        )
+      }
     )
   }
 
@@ -30,7 +32,6 @@ export class ImagesComponent implements OnInit {
     let reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       this.file = event.target.files[0];
-      console.debug(this.file)
     }
   }
 

@@ -54,8 +54,7 @@ exports.uploadImage = async function (req, res, next) {
 exports.viewImage = async function (req, res, next) {
     gfs.collection('fs'); //set collection name to lookup into
     /** First check if file exists */
-    gfs.files.find().sort({ uploadDate: -1 }).toArray(function (err, files) {
-        console.debug(files)
+    gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
         if (!files || files.length === 0) {
             return res.status(404).json({
                 responseCode: 1,
@@ -64,11 +63,11 @@ exports.viewImage = async function (req, res, next) {
         }
         /** create read stream */
         var readstream = gfs.createReadStream({
-            filename: files[req.params.index].filename,
+            filename: files[0].filename,
             root: "fs"
         });
         /** set the proper content type */
-        res.set('Content-Type', files[req.params.index].contentType)
+        res.set('Content-Type', files[0].contentType)
         /** return response */
         return readstream.pipe(res);
     });

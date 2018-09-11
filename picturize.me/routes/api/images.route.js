@@ -21,7 +21,7 @@ router.delete('/:id', ImageController.removeImage)
 
 router.post('/upload',  ImageController.uploadImage)
 
-router.get('/file/:index',  ImageController.viewImage)
+router.get('/file/:filename',  ImageController.viewImage)
 
 
 // Export the Router

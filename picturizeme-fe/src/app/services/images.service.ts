@@ -19,12 +19,16 @@ export class ImagesService {
     return this.http.get(`${this.resourceUrl}?index=${index}`, { observe: "response" })
   }
 
-  getAll(): Observable<HttpResponse<any>> {
-    return this.http.get<any[]>(`${this.resourceUrl}`, { observe: "response" })
+  delete(id) {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: "response" })
+  }
+
+  getAll(limit): Observable<HttpResponse<any>> {
+    return this.http.get<any[]>(`${this.resourceUrl}`, { observe: "response", params: {limit: limit} })
   }
 
   save(image) {
-    return this.http.post(`${this.resourceUrl}`, image, { observe: "response" })
+    return this.http.post(`${this.resourceUrl}`, image,  { observe: "response" })
   }
 
   upload(file: File) {

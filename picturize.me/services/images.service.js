@@ -27,10 +27,10 @@ exports.getImages = async function (query, page, limit) {
     // Try Catch the awaited promise to handle the error 
 
     try {
-        var todos = await Image.paginate(query, options)
-
+        var images = await Image.find().sort({ date: -1}).limit(Number(limit))
+        // ?.paginate(query, options)
         // Return the todod list that was retured by the mongoose promise
-        return todos;
+        return images;
 
     } catch (e) {
 
@@ -102,10 +102,7 @@ exports.deleteImage = async function (id) {
 
     // Delete the Todo
     try {
-        var deleted = await Image.remove({ _id: id })
-        if (deleted.result.n === 0) {
-            throw Error("Image Could not be deleted")
-        }
+        var deleted = await Image.deleteOne({ _id: id })
         return deleted
     } catch (e) {
         throw Error("Error Occured while Deleting the Image")
