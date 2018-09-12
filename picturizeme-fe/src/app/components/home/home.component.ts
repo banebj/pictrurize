@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ImagesService } from '../../services/images.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
   imageDesc: any[] = [];
   loading: boolean = false;
 
-  constructor(private imagesService: ImagesService) { }
+  constructor(private imagesService: ImagesService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getImageDesc()
@@ -70,6 +71,7 @@ export class HomeComponent implements OnInit {
     this.imagesService.delete(id).subscribe(
       data => {
         this.getImageDesc()
+        this.toastr.success("Succesfully delete image!", "Success")
       }
     )
   }

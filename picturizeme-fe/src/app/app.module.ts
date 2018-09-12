@@ -11,12 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from './shared/http-interceptor';
 import { HomeModule } from './components/home/home.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    SharedModule,
     ImagesModule,
     HomeModule,
     routing,

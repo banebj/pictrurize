@@ -7,12 +7,12 @@ import { ImagesService } from '../../services/images.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../shared/http-interceptor';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ImagesRoutingModule,
-    FormsModule
+    SharedModule,
   ],
   providers: [
     ImagesService,
