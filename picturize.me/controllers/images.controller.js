@@ -158,6 +158,7 @@ exports.createImage = async function (req, res, next) {
 exports.updateImage = async function (req, res, next) {
 
     // Id is necessary for the update
+    console.debug(req.body)
 
     if (!req.body._id) {
         return res.status(400).json({ status: 400., message: "Id must be present" })

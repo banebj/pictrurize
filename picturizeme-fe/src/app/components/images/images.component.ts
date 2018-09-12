@@ -24,9 +24,9 @@ export class ImagesComponent implements OnInit {
         this.imagesService.save(this.image).subscribe(
           data => {
             setTimeout(() => {
-              this.toastr.success("Successfully posted image "+this.image.title, "Success")
+              this.toastr.success("Successfully posted image "+this.image.title+" redirecting to home page", "Success")
               this.router.navigate([''])
-            }, 0);
+            }, 1000);
           },
           data => {
               this.toastr.error(data.error.message, "Error")

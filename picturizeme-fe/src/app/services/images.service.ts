@@ -31,6 +31,10 @@ export class ImagesService {
     return this.http.post(`${this.resourceUrl}`, image,  { observe: "response" })
   }
 
+  update(image) {
+    return this.http.put(`${this.resourceUrl}`, image,  { observe: "response" })
+  }
+
   upload(file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file)

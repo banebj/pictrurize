@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <form>
+    <form #imageForm="ngForm">
       <div class="row">
         <div class="col-sm-6 form-group form-row">
           <div class="custom-file">
@@ -17,15 +17,15 @@
         </div>
         <div class="form-group form-row col-sm-6">
             <label class="col-form-label col-sm-4" >Description</label>
-            <input type="text" required class="form-control col-sm-8" [(ngModel)]="image.description" name="image.description" >
+            <input type="text" class="form-control col-sm-8" [(ngModel)]="image.description" name="image.description" >
         </div>
         <div class="form-group form-row col-sm-6">
             <label class="col-form-label col-sm-4" >Location</label>
-            <input type="text" required class="form-control col-sm-8" [(ngModel)]="image.location" name="image.location" >
+            <input type="text" class="form-control col-sm-8" [(ngModel)]="image.location" name="image.location" >
         </div>
         <div class="col-sm-12">
           <button type="button" (click)="goBack()" class="btn btn-info">Go Back </button>
-          <button type="button" (click)="onSubmit()" class="btn btn-primary float-right">Submit </button>
+          <button type="button" [disabled]="imageForm.invalid" (click)="onSubmit()" class="btn btn-primary float-right">Submit </button>
         </div>
       </div>
     </form>

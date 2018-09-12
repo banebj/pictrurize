@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ImagesService } from '../../services/images.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +14,10 @@ export class HomeComponent implements OnInit {
   imageLoading: boolean = false;
   imageDesc: any[] = [];
   loading: boolean = false;
+  modal: NgbModalRef;
+  imageForm: any = {}
 
-  constructor(private imagesService: ImagesService, private toastr: ToastrService) { }
+  constructor(private imagesService: ImagesService, private toastr: ToastrService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getImageDesc()
@@ -72,6 +75,22 @@ export class HomeComponent implements OnInit {
       data => {
         this.getImageDesc()
         this.toastr.success("Succesfully delete image!", "Success")
+      }
+    )
+  }
+
+  openEditModal(content, image){
+    this.modal = this.modalService.open(content)
+    this.imageForm = Object.assign({}, image)
+  }
+
+  saveEditModal(form){
+    this.imageForm.image = null;
+    this.imagesService.update(this.imageForm).subscribe(
+      data => {
+        this.toastr.success("Successfully update image"+this.imageForm.title, "Success")
+        this.getImageDesc();
+        this.modal.close();
       }
     )
   }

@@ -19,7 +19,8 @@
             <span><b>Date : </b>{{image.date | date}}</span><br />
             <span><b>Location : </b><span class="badge badge-info">{{image.location}}</span></span><br />
             <span><b>Description : </b>{{image.location}}</span>
-            <button class="mt-5 btn btn-danger float-right" type="button" (click)="deleteImage(imageDesc[i]._id)">Delete</button>
+            <button class="mt-5 btn btn-danger float-right" type="button" (click)="deleteImage(image._id)">Delete</button>
+            <button class="mt-5 btn btn-secondary float-right" type="button" (click)="openEditModal(content, image)">Edit</button>
           </div>
           <div class="col-sm-6">
             <img class="m-1 rounded border border-info" style="max-width: 70%;" [src]="image.image" alt="Place image title"
@@ -30,3 +31,48 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit image</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form name="contactForm" #contactForm="ngForm" role="form">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label>Name</label>
+          <input type="text" class="form-control" #username="ngModel" required name="imageForm.title" [(ngModel)]="imageForm.title">
+          <div *ngIf="username.dirty && username.invalid">
+            <div class="alert alert-danger">
+              User name is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-12">
+          <label>Description</label>
+          <input type="text" class="form-control" name="imageForm.description" [(ngModel)]="imageForm.description">
+        </div>
+        <div class="form-group col-md-12">
+          <label>Location</label>
+          <input type="text" class="form-control"  name="imageForm.location" [(ngModel)]="imageForm.location">
+        </div>
+      </div>
+    </form>
+    <div class="col-sm-12 alert alert-danger" *ngIf="error">
+      {{error}}
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d('Cross click')">
+      <span class="fa fa-ban"></span>&nbsp;
+      <span>Cancel</span>
+    </button>
+    <button type="button" [disabled]="contactForm.invalid" (click)="saveEditModal(contactForm)" class="btn btn-primary">
+      <span class="fa fa-floppy-o"></span>&nbsp;
+      <span>Save</span>
+    </button>
+  </div>
+</ng-template>
